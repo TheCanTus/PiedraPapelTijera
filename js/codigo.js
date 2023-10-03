@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const computerChoiceElement = document.getElementById("computer-choice");
   const winsElement = document.getElementById("wins");
   const lossesElement = document.getElementById("losses");
+  const restartButton = document.getElementById("restart");
 
   function aleatorio(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -46,6 +47,36 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function deshabilitarBotones() {
+    rockButton.disabled = true;
+    paperButton.disabled = true;
+    scissorsButton.disabled = true;
+}
+
+function habilitarBotones() {
+  rockButton.disabled = false;
+  paperButton.disabled = false;
+  scissorsButton.disabled = false;
+}
+
+function mostrarMensajeFinal(mensaje) {
+    resultElement.textContent = mensaje;
+}
+
+function verificarFinDelJuego() {
+    if (triunfos >= maxVidas || perdidas >= maxVidas) {
+        deshabilitarBotones();
+        mostrarMensajeFinal(
+            "El juego ha terminado. Ganaste " +
+            triunfos +
+            " veces. Perdiste " +
+            perdidas +
+            " veces."
+        );
+        restartButton.style.display = "block";
+    }
+}
+
   function jugar(usuarioChoice) {
     if (vidasJugador <= 0 || vidasComputadora <= 0) {
       return;
@@ -66,18 +97,32 @@ document.addEventListener("DOMContentLoaded", function () {
     ) {
       resultElement.textContent = "GANASTE";
       triunfos++;
-      vidasComputadora--; // Restar una vida a la computadora
+      vidasComputadora--;
     } else {
       resultElement.textContent = "PERDISTE";
       perdidas++;
-      vidasJugador--; // Restar una vida al jugador
+      vidasJugador--; 
     }
 
     winsElement.textContent = triunfos;
     lossesElement.textContent = perdidas;
 
-    verificarFinDelJuego(); // Verificar si el juego debe detenerse
+    verificarFinDelJuego();
   }
+  
+  function reiniciarJuego() {
+    triunfos = 0;
+    perdidas = 0;
+    vidasJugador = 3;
+    vidasComputadora = 3;
+    winsElement.textContent = triunfos;
+    lossesElement.textContent = perdidas;
+    resultElement.textContent = "";
+    playerChoiceElement.textContent = "";
+    computerChoiceElement.textContent = "";
+    habilitarBotones();
+    restartButton.style.display = "none"; // Ocultar el botón de reinicio
+}
 
   rockButton.addEventListener("click", function () {
     jugar(1);
@@ -90,4 +135,8 @@ document.addEventListener("DOMContentLoaded", function () {
   scissorsButton.addEventListener("click", function () {
     jugar(3);
   });
+
+  restartButton.addEventListener("click", function () {
+    reiniciarJuego();
+});
 });
