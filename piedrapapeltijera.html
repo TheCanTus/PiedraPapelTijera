@@ -1,10 +1,24 @@
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="es">
+<head>
     <meta charset="utf-8" />
-    <title>Mi primera programada</title>
+    <title>Piedra, papel o tijera</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Enlaza tu archivo CSS -->
     <script src="js/codigo.js"></script>
-  </head>
-  <body>
-    <h1>Piedra, papel o tijra</h1>
-  </body>
+</head>
+<body>
+    <div class="container">
+        <h1>Piedra, papel o tijera</h1>
+        <div class="game">
+            <button id="rock">Piedra 🪨</button>
+            <button id="paper">Papel 📃</button>
+            <button id="scissors">Tijera ✂️</button>
+        </div>
+        <div class="results">
+            <p id="result"></p>
+            <p>Ganaste: <span id="wins">0</span> veces</p>
+            <p>Perdiste: <span id="losses">0</span> veces</p>
+        </div>
+    </div>
+</body>
 </html>
