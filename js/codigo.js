@@ -1,6 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
   let triunfos = 0;
   let perdidas = 0;
+  let vidasJugador = 3; 
+  let vidasComputadora = 3; 
+
+  const maxVidas = 3; 
 
   const rockButton = document.getElementById("rock");
   const paperButton = document.getElementById("paper");
@@ -12,8 +16,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const lossesElement = document.getElementById("losses");
 
   function aleatorio(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
+      return Math.floor(Math.random() * (max - min + 1) + min);
   }
+
 
   function eleccion(jugada) {
     let resultado = ""
@@ -29,52 +34,62 @@ document.addEventListener("DOMContentLoaded", function () {
     return resultado
   }
 
-  function jugar(usuarioChoice) {
-    const pcChoice = aleatorio(1, 3);
-    const resultado = eleccion(usuarioChoice);
-
-    playerChoiceElement.textContent = resultado;
-    computerChoiceElement.textContent = eleccion(pcChoice);
-
-    if (pcChoice === usuarioChoice) {
-      resultElement.textContent = "EMPATE";
-    } else if (
-      (usuarioChoice === 1 && pcChoice === 3) ||
-      (usuarioChoice === 2 && pcChoice === 1) ||
-      (usuarioChoice === 3 && pcChoice === 2)
-    ) {
-      resultElement.textContent = "GANASTE";
-      triunfos++;
-    } else {
-      resultElement.textContent = "PERDISTE";
-      perdidas++;
+   function verificarFinDelJuego() {
+        if (triunfos >= maxVidas || perdidas >= maxVidas) {
+            alert(
+                "El juego ha terminado. Ganaste " +
+                triunfos +
+                " veces. Perdiste " +
+                perdidas +
+                " veces."
+            );
+            // Puedes realizar acciones adicionales aquí si lo deseas.
+        }
     }
 
-    winsElement.textContent = triunfos;
-    lossesElement.textContent = perdidas;
+    function jugar(usuarioChoice) {
+        if (vidasJugador <= 0 || vidasComputadora <= 0) {
+            // El juego ya ha terminado, no hacer nada más
+            return;
+        }
 
-    if (triunfos >= 3 || perdidas >= 3) {
-      alert(
-        "Ganaste " +
-        triunfos +
-        " veces. Perdiste " +
-        perdidas +
-        " veces."
-      );
-    } else {
-      // Continuar el juego
+        const pcChoice = aleatorio(1, 3);
+        const resultado = eleccion(usuarioChoice);
+
+        playerChoiceElement.textContent = resultado;
+        computerChoiceElement.textContent = eleccion(pcChoice);
+
+        if (pcChoice === usuarioChoice) {
+            resultElement.textContent = "EMPATE";
+        } else if (
+            (usuarioChoice === 1 && pcChoice === 3) ||
+            (usuarioChoice === 2 && pcChoice === 1) ||
+            (usuarioChoice === 3 && pcChoice === 2)
+        ) {
+            resultElement.textContent = "GANASTE";
+            triunfos++;
+            vidasComputadora--; // Restar una vida a la computadora
+        } else {
+            resultElement.textContent = "PERDISTE";
+            perdidas++;
+            vidasJugador--; // Restar una vida al jugador
+        }
+
+        winsElement.textContent = triunfos;
+        lossesElement.textContent = perdidas;
+
+        verificarFinDelJuego(); // Verificar si el juego debe detenerse
     }
-  }
 
-  rockButton.addEventListener("click", function () {
-    jugar(1);
-  });
+    rockButton.addEventListener("click", function () {
+        jugar(1);
+    });
 
-  paperButton.addEventListener("click", function () {
-    jugar(2);
-  });
+    paperButton.addEventListener("click", function () {
+        jugar(2);
+    });
 
-  scissorsButton.addEventListener("click", function () {
-    jugar(3);
-  });
+    scissorsButton.addEventListener("click", function () {
+        jugar(3);
+    });
 });
