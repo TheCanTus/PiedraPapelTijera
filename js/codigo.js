@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
   let triunfos = 0;
   let perdidas = 0;
-  let vidasJugador = 3; 
-  let vidasComputadora = 3; 
+  let vidasJugador = 3;
+  let vidasComputadora = 3;
 
-  const maxVidas = 3; 
+  const maxVidas = 3;
 
   const rockButton = document.getElementById("rock");
   const paperButton = document.getElementById("paper");
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const lossesElement = document.getElementById("losses");
 
   function aleatorio(min, max) {
-      return Math.floor(Math.random() * (max - min + 1) + min);
+    return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
 
@@ -34,62 +34,60 @@ document.addEventListener("DOMContentLoaded", function () {
     return resultado
   }
 
-   function verificarFinDelJuego() {
-        if (triunfos >= maxVidas || perdidas >= maxVidas) {
-            alert(
-                "El juego ha terminado. Ganaste " +
-                triunfos +
-                " veces. Perdiste " +
-                perdidas +
-                " veces."
-            );
-            // Puedes realizar acciones adicionales aquí si lo deseas.
-        }
+  function verificarFinDelJuego() {
+    if (triunfos >= maxVidas || perdidas >= maxVidas) {
+      alert(
+        "El juego ha terminado. Ganaste " +
+        triunfos +
+        " veces. Perdiste " +
+        perdidas +
+        " veces."
+      );
+    }
+  }
+
+  function jugar(usuarioChoice) {
+    if (vidasJugador <= 0 || vidasComputadora <= 0) {
+      return;
     }
 
-    function jugar(usuarioChoice) {
-        if (vidasJugador <= 0 || vidasComputadora <= 0) {
-            // El juego ya ha terminado, no hacer nada más
-            return;
-        }
+    const pcChoice = aleatorio(1, 3);
+    const resultado = eleccion(usuarioChoice);
 
-        const pcChoice = aleatorio(1, 3);
-        const resultado = eleccion(usuarioChoice);
+    playerChoiceElement.textContent = resultado;
+    computerChoiceElement.textContent = eleccion(pcChoice);
 
-        playerChoiceElement.textContent = resultado;
-        computerChoiceElement.textContent = eleccion(pcChoice);
-
-        if (pcChoice === usuarioChoice) {
-            resultElement.textContent = "EMPATE";
-        } else if (
-            (usuarioChoice === 1 && pcChoice === 3) ||
-            (usuarioChoice === 2 && pcChoice === 1) ||
-            (usuarioChoice === 3 && pcChoice === 2)
-        ) {
-            resultElement.textContent = "GANASTE";
-            triunfos++;
-            vidasComputadora--; // Restar una vida a la computadora
-        } else {
-            resultElement.textContent = "PERDISTE";
-            perdidas++;
-            vidasJugador--; // Restar una vida al jugador
-        }
-
-        winsElement.textContent = triunfos;
-        lossesElement.textContent = perdidas;
-
-        verificarFinDelJuego(); // Verificar si el juego debe detenerse
+    if (pcChoice === usuarioChoice) {
+      resultElement.textContent = "EMPATE";
+    } else if (
+      (usuarioChoice === 1 && pcChoice === 3) ||
+      (usuarioChoice === 2 && pcChoice === 1) ||
+      (usuarioChoice === 3 && pcChoice === 2)
+    ) {
+      resultElement.textContent = "GANASTE";
+      triunfos++;
+      vidasComputadora--; // Restar una vida a la computadora
+    } else {
+      resultElement.textContent = "PERDISTE";
+      perdidas++;
+      vidasJugador--; // Restar una vida al jugador
     }
 
-    rockButton.addEventListener("click", function () {
-        jugar(1);
-    });
+    winsElement.textContent = triunfos;
+    lossesElement.textContent = perdidas;
 
-    paperButton.addEventListener("click", function () {
-        jugar(2);
-    });
+    verificarFinDelJuego(); // Verificar si el juego debe detenerse
+  }
 
-    scissorsButton.addEventListener("click", function () {
-        jugar(3);
-    });
+  rockButton.addEventListener("click", function () {
+    jugar(1);
+  });
+
+  paperButton.addEventListener("click", function () {
+    jugar(2);
+  });
+
+  scissorsButton.addEventListener("click", function () {
+    jugar(3);
+  });
 });
